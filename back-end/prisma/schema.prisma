@@ -1,0 +1,93 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Funcionario {
+  id                 Int               @id @default(autoincrement())
+  nome               String
+  email              String            @unique
+  dataAdmissao       DateTime
+  status             StatusFuncionario @default(ATIVO)
+  departamentoId     Int
+  cargoId            Int
+  cpf                String            @unique
+  data_de_nascimento String
+  idade              Int
+  salario            Int
+  ferias             Ferias[]
+  cargo              Cargo             @relation(fields: [cargoId], references: [id])
+  departamento       Departamento      @relation(fields: [departamentoId], references: [id])
+
+  @@map("funcionarios")
+}
+
+model Departamento {
+  id           Int           @id @default(autoincrement())
+  nome         String
+  funcionarios Funcionario[]
+
+  @@map("departamentos")
+}
+
+model Cargo {
+  id           Int           @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  funcionarios Funcionario[]
+
+  @@map("cargos")
+}
+
+model Ferias {
+  id            Int         @id @default(autoincrement())
+  dataInicio    DateTime
+  dataFim       DateTime
+  aprovada      Boolean     @default(false)
+  funcionarioId Int
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+
+  @@map("ferias")
+}
+
+view aniversariantes_mes_atual {
+  id                 Int     @unique
+  nome               String?
+  data_de_nascimento String?
+  dia_aniversario    String?
+  mes_aniversario    String?
+  idade              Float?
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view tempo_de_casa {
+  id           Int       @unique
+  nome         String?
+  dataAdmissao DateTime?
+  data_atual   DateTime? @db.Date
+  anos         Decimal?  @db.Decimal
+  meses        Decimal?  @db.Decimal
+  dias         Decimal?  @db.Decimal
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view media_salarial_por_cargo {
+  cargo_id           Int     @unique
+  cargo_nome         String?
+  total_funcionarios Int?
+  media_salarial     Int?
+}
+
+enum StatusFuncionario {
+  ATIVO
+  INATIVO
+  FERIAS
+  LICENCA
+  AFASTADO
+}
