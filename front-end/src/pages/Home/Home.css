@@ -37,7 +37,19 @@ h1, h2, h3 {
     border-radius: 15px;
 
 }
-
+#csvBtn {
+  background-color: rgb(98, 172, 98);
+  border: transparent;
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+#csvBtn:hover {
+  background-color: rgb(120, 207, 120);
+  cursor: pointer;
+}
+  
 #btnDesligarFunc {
   background-color: rgb(255, 49, 49);
   padding: 10px;

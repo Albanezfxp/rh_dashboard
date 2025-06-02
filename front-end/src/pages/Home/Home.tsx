@@ -106,6 +106,34 @@ tempoDeCasa.forEach((func: any) => {
     fetchData();
   }, []);
 
+const handleDownloadCSV = () => {
+  const funcionariosAtivos = funcionarios.filter(func => func.status === "ATIVO");
+
+  const header = ["Nome", "Cargo", "Departamento", "Salário", "E-mail", "Data de Admissão"];
+  
+  const rows = funcionariosAtivos.map(func => [
+    func.nome,
+    func.cargo?.nome || "",
+    func.departamento?.nome || "",
+    func.salario,
+    func.email,
+    new Date(func.dataAdmissao).toLocaleDateString("pt-BR")
+  ]);
+
+  const csvContent = [header, ...rows]
+    .map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "funcionarios_ativos.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 const handleDesligamento = async (e: React.MouseEvent, id: number) => {
   e.preventDefault();
   
@@ -182,13 +210,13 @@ const tempoDeCasaOptions = {
         label: 'Funcionários por Departamento',
 data: departamentos.map(d => d.funcionarios?.filter(f => f.status === "ATIVO").length || 0),
     backgroundColor: [
-  '#8e44ad', // roxo escuro
-  '#2980b9', // azul escuro
-  '#27ae60', // verde escuro
-  '#f39c12', // amarelo queimado
+  '#8e44ad', 
+  '#2980b9', 
+  '#27ae60', 
+  '#f39c12', 
   '#c0392b',
   '#1abc9c',
-  '#FF6382', // vermelho escuro
+  '#FF6382', 
 ]
 ,
         borderWidth: 1  ,
@@ -316,7 +344,8 @@ const mediaSalarialOptions = {
         </div>
 
 <div className="section">
-  <h2>Funcionários Ativos</h2> {/* Mudei o título para ficar claro */}
+  <h2>Funcionários Ativos</h2> 
+  <button id='csvBtn' onClick={handleDownloadCSV}>Baixar CSV</button>
   <table className="departamentos-table">
     <thead>
       <tr>
