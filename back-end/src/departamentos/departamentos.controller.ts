@@ -22,6 +22,11 @@ export class DepartamentoController {
     return this.departamentoService.getAll();
   }
 
+  @Get("quantidade-por-departamento")
+  async getQuantidadePorDepartamento() {
+    return this.departamentoService.getQuantidadePorDepartamento()
+  }
+
   @Get(':id')
   async getById(@Param('id') id: string) {
     return this.departamentoService.getById(Number(id));

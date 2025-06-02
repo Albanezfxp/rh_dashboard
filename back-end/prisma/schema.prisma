@@ -84,6 +84,13 @@ view media_salarial_por_cargo {
   media_salarial     Int?
 }
 
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view view_departamentos_com_quantidade {
+  id                      Int     @unique
+  departamento            String?
+  quantidade_funcionarios Int?
+}
+
 enum StatusFuncionario {
   ATIVO
   INATIVO

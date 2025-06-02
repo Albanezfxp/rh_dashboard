@@ -34,29 +34,7 @@ export class FuncionarioController {
   }
   @Get('aniversariante-mes-atual')
   async getAniversariantesDoMes() {
-    try {
-      const result = await this.funcionarioService.getAniversarianteDoMes();
-      
-      if (!result || result.length === 0) {
-        return {
-          success: true,
-          message: 'Nenhum aniversariante encontrado neste mês',
-          data: []
-        };
-      }
-      
-      return result
-      
-    } catch (error) {
-      throw new HttpException(
-        {
-          success: false,
-          message: error.response?.message || error.message,
-          error: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        },
-        error.status || HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
+   return await this.funcionarioService.getAniversarianteDoMes()
   }
   
   @Get(':id')
@@ -80,7 +58,10 @@ export class FuncionarioController {
       throw error;
     }
   }
-
+  @Put('desligamento/:id')
+  async desligamento(@Param('id') id:number) {
+    return this.funcionarioService.desligamento(id)
+  }
   @Put(':id')
   async update(
     @Param('id') id: number,

@@ -24,7 +24,7 @@ export class FuncionarioService {
     }
  async getById(id: number) {
     const user = await this.prisma.funcionario.findUnique({
-        where: { id },
+        where: { id: Number(id) },
         include: {
             cargo: { select: { nome: true } },
             departamento: { select: { nome: true } },
@@ -178,7 +178,26 @@ async getAniversarianteDoMes() {
 
         return userUpdate
     }
+    async desligamento(id: number) {
+    const idNumber = Number(id);
 
+    const user = await this.prisma.funcionario.findFirst({
+        where: { id: idNumber } 
+    });
+
+    if (!user) {
+        throw new HttpException("Funcionário não encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    const userUpdate = await this.prisma.funcionario.update({
+        where: { id: idNumber },
+        data: {
+            status: "INATIVO"
+        }
+    });
+
+    return userUpdate;
+}
     async delete(id: number) {
         await this.prisma.funcionario.delete({
             where: {id: id}

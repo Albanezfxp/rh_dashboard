@@ -1,0 +1,89 @@
+.modal-overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem; /* espaço para não grudar na borda da tela */
+  z-index: 1000;
+}
+
+.modal {
+  background: #1e1e1e;
+  color: #ecf0f1;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 80vh; /* limite de altura para caber na tela */
+  overflow-y: auto; /* adiciona scroll vertical se passar do limite */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #2c2c2c;
+  color: #ecf0f1;
+  box-sizing: border-box;
+}
+
+.modal label {
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-actions > button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+    background-color: rgba(153, 102, 255, 0.514);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-actions > button:hover {
+  background: #1e1e1e;
+}
+.modal::-webkit-scrollbar {
+  width: 8px; /* largura da barra de rolagem */
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #2c2c2c; /* cor do "trilho" do scroll */
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: #999999; /* cor da "pegada" que você arrasta */
+  border-radius: 10px;
+  border: 2px solid #2c2c2c; /* espaço entre o thumb e o track */
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background-color: #999999; /* cor ao passar o mouse */
+}
+
+/* Firefox */
+.modal {
+  scrollbar-width: thin; /* fino */
+  scrollbar-color: #999999 #2c2c2c; /* thumb e track */
+}

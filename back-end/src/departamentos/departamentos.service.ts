@@ -15,6 +15,10 @@ export class DepartamentoService {
     });
   }
 
+  async getQuantidadePorDepartamento() {
+    return await this.prisma.view_departamentos_com_quantidade.findMany()
+  }
+
   async getById(id: number) {
     const departamento = await this.prisma.departamento.findUnique({
       where: { id },
