@@ -110,22 +110,18 @@ const handleDesligamento = async (e: React.MouseEvent, id: number) => {
   e.preventDefault();
   
   try {
-    // Confirmação antes de desligar
     if (!window.confirm('Tem certeza que deseja desligar este funcionário?')) {
       return;
     }
 
-    // Chamada à API para desligamento
     const response = await axios.put(`http://localhost:3000/funcionarios/desligamento/${id}`);
     
-    // Atualiza o estado local
     setFuncionarios(prevFuncionarios => 
       prevFuncionarios.map(func => 
         func.id === id ? { ...func, status: "INATIVO" } : func
       )
     );
     
-    // Atualiza contagem de ativos
     setTotalAtivos(prev => prev - 1);
     
     alert('Funcionário desligado com sucesso!');
@@ -184,7 +180,7 @@ const tempoDeCasaOptions = {
     datasets: [
       {
         label: 'Funcionários por Departamento',
-        data: departamentos.map(d => d.funcionarios?.length),
+data: departamentos.map(d => d.funcionarios?.filter(f => f.status === "ATIVO").length || 0),
     backgroundColor: [
   '#8e44ad', // roxo escuro
   '#2980b9', // azul escuro
