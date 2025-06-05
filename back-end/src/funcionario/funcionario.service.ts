@@ -45,7 +45,6 @@ async getTempoDeCasa() {
 
 async getAniversarianteDoMes() {
     try {
-        // Obter mês atual formatado com dois dígitos (01-12)
         const mesAtual = (new Date().getMonth() + 1).toString().padStart(2, '0');
         
         // Verificar se a view existe
@@ -80,9 +79,9 @@ async getAniversarianteDoMes() {
         );
     }
 }
-    async getWithFilter(filter: FilterFuncionarioDto) {
-        const where: any = {};
 
+    async getWithFilter(filter: FilterFuncionarioDto) {
+        const where: any = {};  
         if (filter.departamentoId ) {
             where.departamentoId = filter.departamentoId
         }
@@ -100,6 +99,9 @@ async getAniversarianteDoMes() {
         }
         if (filter.dataAdmissaoInicio || filter.dataAdmissaoFim) {
             where.dataAdmissao = {};
+        }
+        if (filter.email) {
+            where.email = filter.email;
         }
         if (filter.dataAdmissaoFim) {
             where.dataAdmissao.lte = new Date(filter.dataAdmissaoFim)

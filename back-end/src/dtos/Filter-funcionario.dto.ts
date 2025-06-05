@@ -1,5 +1,5 @@
 // src/funcionario/dto/filter-funcionario.dto.ts
-import { IsOptional, IsNumber, IsString, IsEnum, IsDateString } from 'class-validator';
+import { IsOptional, IsNumber, IsString, IsEnum, IsDateString, IsEmail } from 'class-validator';
 import { StatusFuncionario } from 'generated/prisma';
 
 export class FilterFuncionarioDto {
@@ -26,4 +26,9 @@ export class FilterFuncionarioDto {
   @IsOptional()
   @IsString()
   nome?: string;
+
+  @IsOptional()
+  @IsEmail()
+  @IsString()
+  email?: string
 }

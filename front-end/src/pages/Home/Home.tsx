@@ -19,8 +19,7 @@ export default function Home() {
   const [aniversariantes, setAniversariantes] = useState<Funcionario[]>([]);
   const [mediaSalariaPorCargo, setMediaSalariaPorCargo] = useState<MediaSalarialCargo[]>([])
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
-  const [funcionariosDesligados, setFuncionariosDesligados] = useState<Funcionario[]>([])
-  const [funcionariosAtivos, setFuncionariosAtivos] = useState<Funcionario[]>([])
+  const [filtroEmail, setFiltroEmail] = useState("");
   const [cargos, setCargos] = useState<Cargo[]>([])
   const [totalAtivos, setTotalAtivos] = useState<number>(0);
   const [tempoDeCasa, setTempoDeCasa] = useState([])
@@ -328,51 +327,64 @@ const mediaSalarialOptions = {
           <h3>Distribuição por Departamento</h3>
           <Pie data={departamentosChartData}  />
         </div>
-                      <div className="chart-container">
+  <div className="chart-container">
   <h3>Tempo de Casa</h3>
   <div style={{ height: '450px', width: '100%' }}>
   <Bar data={tempoDeCasaBarData} options={tempoDeCasaOptions} />
   </div>
 </div>
-   
+  </div>
+    <div className="chart-container" id='chart-container-id'>
+      <h3>Media salarial por cargo</h3>
+      <div style={{ height: '450px', width: '100%' }}>
+        <Bar data={mediaSalarialData} options={mediaSalarialOptions} />
       </div>
-             <div className="chart-container" id='chart-container-id'>
-          <h3>Media salarial por cargo</h3>
-<div style={{ height: '450px', width: '100%' }}>
-  <Bar data={mediaSalarialData} options={mediaSalarialOptions} />
-</div>
-        </div>
+    </div>
+ <div className="section">
+      <div id='header-section-func-ativos'>
+        <h2>Funcionários Ativos</h2>
+        <input
+        id='inpt-search-by-email'
+          type="text"
+          placeholder="Buscar por e-mail"
+          value={filtroEmail}
+          onChange={(e) => setFiltroEmail(e.target.value)}
+        />
+      </div>
 
-<div className="section">
-  <h2>Funcionários Ativos</h2> 
-  <button id='csvBtn' onClick={handleDownloadCSV}>Baixar CSV</button>
-  <table className="departamentos-table">
-    <thead>
-      <tr>
-        <th>Funcionário</th>
-        <th>Cargo</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      {funcionarios
-        .filter(func => func.status === "ATIVO") 
-        .map(func => ( 
-          <tr key={func.id}>
-            <td>{func.nome}</td>
-            <td>{func.cargo?.nome}</td>
-            <td>
-              <div>
-            <button onClick={(e) => handleDesligamento(e, func.id)}
- id='btnDesligarFunc'>Desligar</button>
-            </div>
-            </td>
+      <button id="csvBtn" onClick={handleDownloadCSV}>Baixar CSV</button>
+
+      <table className="departamentos-table">
+        <thead>
+          <tr>
+            <th>Funcionário</th>
+            <th>Cargo</th>
+            <th>Ações</th>
           </tr>
-        ))
-      }
-    </tbody>
-  </table>
-</div>
+        </thead>
+        <tbody>
+          {funcionarios
+            .filter(func => func.status === "ATIVO")
+            .filter(func =>
+              func.email?.toLowerCase().includes(filtroEmail.toLowerCase())
+            )
+            .map(func => (
+              <tr key={func.id}>
+                <td>{func.nome}</td>
+                <td>{func.cargo?.nome}</td>
+                <td>
+                  <div>
+                    <button onClick={(e) => handleDesligamento(e, func.id)} id="btnDesligarFunc">
+                      Desligar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
       <div className="section">
         <h2>Departamentos</h2>
         <table className="departamentos-table">
@@ -388,7 +400,7 @@ const mediaSalarialOptions = {
               <tr key={depto.id}>
                 <td>{depto.nome}</td>
                 <td>{depto.funcionarios?.length}</td>
-                <td>{((depto.funcionarios?.length || 0  / totalAtivos) * 100).toFixed(1)}%</td>
+<td>{(((depto.funcionarios?.length || 0) / totalAtivos) * 100).toFixed(1)}%</td>
               </tr>
             ))}
           </tbody>
@@ -398,7 +410,6 @@ const mediaSalarialOptions = {
     isOpen={modalOpen}
     onClose={() => setModalOpen(false)}
     onSave={(novoFuncionario) => {
-    // Enviar para o backend ou atualizar o estado
         console.log(novoFuncionario);
   }}
     departamentos={departamentos}

@@ -37,6 +37,22 @@ h1, h2, h3 {
     border-radius: 15px;
 
 }
+
+#header-section-func-ativos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#inpt-search-by-email{
+height: 30px;
+width: 250px;
+background-color: #474747;
+border: transparent;
+border-radius: 10px;
+padding: 5px;
+color: wheat;
+}
+
 #csvBtn {
   background-color: rgb(98, 172, 98);
   border: transparent;
